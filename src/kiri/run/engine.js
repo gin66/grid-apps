@@ -103,6 +103,9 @@ class Engine {
     setController(controller) {
         let ctrl = this.settings.controller;
         Object.assign(ctrl, controller);
+        if (ctrl.assembly) {
+            client.wasm(ctrl.assembly);
+        }
         if (ctrl.threaded) {
             client.pool.start();
         } else {
