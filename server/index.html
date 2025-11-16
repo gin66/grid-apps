@@ -1,0 +1,52 @@
+<html><head><meta charset="utf-8"></head>
+
+<script type="module">
+async function loadBinary(url) {
+    const response = await fetch(url);
+    const binaryData = await response.arrayBuffer();
+    return binaryData;
+}
+
+async function loadEngine() {
+  const m = await import('/pack/kiri-eng.js');
+  return m.Engine;
+}
+
+(async () => {
+  const stl = await loadBinary("/stl/cube.stl");
+  console.log("Binary loaded:", stl);
+
+  var engine = await loadEngine();
+  new engine({workURL:"/pack/kiri-work.js",poolURL:"/pack/kiri-pool.js"})
+	.setListener(console.log)
+	.parse(stl)
+	.then(eng => { console.log({ log: "parse complete" }); return eng; })
+	.then(mod => mod.move(0.0,0.0,0))
+	.then(eng => { console.log({ log: "after move" }); return eng; })
+	.then(eng => eng.setController({ assembly: true, threaded: true }) )
+	.then(eng => { console.log({ log: "controller set" }); return eng; })
+	.then(eng => eng.setDevice({
+		    gcodePre: [ ], gcodePost: [ ], gcodeTrack: [ ], gcodeFan: [ ], gcodeLayer: [],
+		    bedWidth: 200, bedHeight: 200, maxHeight: 200, bedDepth: 200,
+		    bedRound: false,
+		    extruders: [ {
+		      extFilament: 1.75, extNozzle: 0.4, extSelect: [""], extDeselect: [""], extOffsetX: 0.0, extOffsetY: 0.0
+		    } ] }))
+	.then(eng => { console.log({ log: "process set" }); return eng; })
+	.then(eng => { eng.slice(); return eng; })
+	.then(eng => { console.log({ log: "slice complete" }); return eng; })
+	.then(eng => eng.prepare())
+	.then(eng => { console.log({ log: "prepare complete" }); return eng; })
+	.then(eng => eng.export())
+	.then(gcode => {
+	    //display_gcode(gcode);
+	    console.log({ log: "export complete" });
+	})
+	.catch(err => {
+	    console.log({ log: "job error", detail: String(err) });
+	});
+})();
+
+</script>
+
+<body>index.html is loaded</body></html>
