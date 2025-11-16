@@ -263,6 +263,7 @@ export const conf = {
                 firstLayerBedTemp: 0,
                 firstLayerBeltBump: 0,
                 firstLayerBeltLead: 3,
+                firstLayerBeltFact: 1,
                 firstLayerBrim: 0,
                 firstLayerBrimGap: 0,
                 firstLayerBrimIn: 0,
@@ -943,6 +944,7 @@ export const conf = {
             threaded: true,
             units: "mm",
             view: null,
+            webGPU: false,
             zoomSpeed: 1.0,
         },
         // default hidden ui groups
