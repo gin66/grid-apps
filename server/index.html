@@ -33,7 +33,7 @@ async function loadEngine() {
 		      extFilament: 1.75, extNozzle: 0.4, extSelect: [""], extDeselect: [""], extOffsetX: 0.0, extOffsetY: 0.0
 		    } ] }))
 	.then(eng => { console.log({ log: "process set" }); return eng; })
-	.then(eng => { eng.slice(); return eng; })
+	.then(eng => eng.slice())
 	.then(eng => { console.log({ log: "slice complete" }); return eng; })
 	.then(eng => eng.prepare())
 	.then(eng => { console.log({ log: "prepare complete" }); return eng; })
